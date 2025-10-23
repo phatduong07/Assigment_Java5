@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký - MyShop Streetwear</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div th:replace="~{layout/_fragments :: main-header}"></div>
+
+  <div class="container py-5" style="max-width:500px;">
+    <h2 class="text-center mb-4">Đăng ký tài khoản</h2>
+
+    <form th:action="@{/register}" method="post" th:object="${account}">
+      <div class="mb-3">
+        <label class="form-label">Tên đăng nhập</label>
+        <input type="text" th:field="*{username}" class="form-control" placeholder="Nhập tên đăng nhập" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Họ và tên</label>
+        <input type="text" th:field="*{fullName}" class="form-control" placeholder="Nhập họ tên" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" th:field="*{email}" class="form-control" placeholder="Nhập email" required>
+      </div>
+
+      <!-- 🆕 Thêm ô nhập số điện thoại -->
+      <div class="mb-3">
+        <label class="form-label">Số điện thoại</label>
+        <input type="text" th:field="*{phoneNumber}" class="form-control" placeholder="Nhập số điện thoại" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Mật khẩu</label>
+        <input type="password" th:field="*{password}" class="form-control" placeholder="Nhập mật khẩu" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Ảnh đại diện (tùy chọn)</label>
+        <input type="text" th:field="*{photo}" class="form-control" placeholder="VD: user1.jpg">
+      </div>
+
+      <button type="submit" class="btn btn-dark w-100">Đăng ký</button>
+
+      <div th:if="${message}" class="alert alert-info text-center mt-3" th:text="${message}"></div>
+
+      <p class="text-center mt-3">Đã có tài khoản?
+        <a href="/login" class="fw-bold text-decoration-none">Đăng nhập ngay</a>
+      </p>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

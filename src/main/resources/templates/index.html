@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>MyShop Streetwear</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<style>
+		.carousel-item img {
+			height: 450px;
+			object-fit: cover;
+		}
+		.product-card img {
+			height: 300px;
+			object-fit: cover;
+		}
+	</style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+	<!-- Header -->
+	<div th:replace="~{layout/_fragments :: main-header}"></div>
+
+	<main class="flex-shrink-0">
+		<!-- Slideshow -->
+		<div id="heroCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+			<div class="carousel-indicators">
+				<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+				<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+				<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+			</div>
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img th:src="@{/picture/back6.webp}" class="d-block w-100" alt="Slide 1">
+				</div>
+				<div class="carousel-item">
+					<img th:src="@{/picture/back5.webp}" class="d-block w-100" alt="Slide 2">
+				</div>
+				<div class="carousel-item">
+					<img th:src="@{/picture/back4.webp}" class="d-block w-100" alt="Slide 3">
+				</div>
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon"></span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+				<span class="carousel-control-next-icon"></span>
+			</button>
+		</div>
+
+		<!-- Sản phẩm -->
+		<div class="container">
+			<h2 class="text-center mb-4">Sản Phẩm Mới</h2>
+
+			<!-- Bộ lọc giá -->
+			<form th:action="@{/products/search}" method="get" class="row justify-content-center mb-4">
+				<div class="col-md-3">
+					<input type="number" name="min" class="form-control" placeholder="Giá tối thiểu (VND)" min="0">
+				</div>
+				<div class="col-md-3">
+					<input type="number" name="max" class="form-control" placeholder="Giá tối đa (VND)" min="0">
+				</div>
+				<div class="col-md-2">
+					<button type="submit" class="btn btn-dark w-100">
+						<i class="fa fa-filter"></i> Lọc giá
+					</button>
+				</div>
+			</form>
+
+			<!-- Nếu không có sản phẩm -->
+			<div th:if="${products.isEmpty()}" class="text-center">
+				<p>Hiện chưa có sản phẩm nào để hiển thị.</p>
+			</div>
+
+			<!-- Danh sách sản phẩm -->
+			<div class="row g-4" th:if="!${products.isEmpty()}">
+				<div class="col-md-3" th:each="product : ${products}">
+					<div class="card h-100 shadow-sm">
+						<a th:href="@{'/product/detail/' + ${product.id}}">
+							<img th:src="@{'/picture/' + ${product.image}}" class="card-img-top product-card"
+								th:alt="${product.name}">
+						</a>
+						<div class="card-body d-flex flex-column">
+							<h5 class="card-title" th:text="${product.name}">Tên sản phẩm</h5>
+							<p class="card-text fw-bold text-danger"
+								th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + 'đ'">
+							</p>
+
+							<div class="mt-auto">
+								<!-- Xem chi tiết -->
+								<a th:href="@{/products/detail/{id}(id=${product.id})}" 
+									class="btn btn-outline-primary w-100 mb-2">
+									<i class="fa fa-eye"></i> Xem chi tiết
+								</a>
+
+								<!-- Hiển thị nút Sửa/Xóa nếu là ADMIN -->
+								<div th:if="${session.role == 'ADMIN'}" class="d-flex gap-2 mb-2">
+									<a th:href="@{/admin/products/edit/{id}(id=${product.id})}" class="btn btn-warning">
+										<i class="fa fa-edit"></i> Sửa
+									</a>
+									<a th:href="@{/products/delete/{id}(id=${product.id})}"
+										class="btn btn-danger w-50"
+										onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này không?')">
+										<i class="fa fa-trash"></i> Xóa
+									</a>
+								</div>
+
+								<!-- Nút thêm vào giỏ -->
+								<form th:action="@{/cart/add}" method="post">
+									<input type="hidden" name="productId" th:value="${product.id}" />
+									<div class="mb-2">
+										<select name="size" class="form-select form-select-sm" required>
+											<option value="">-- Chọn size --</option>
+											<option value="S">Size S</option>
+											<option value="M">Size M</option>
+											<option value="L">Size L</option>
+											<option value="XL">Size XL</option>
+										</select>
+									</div>
+									<button type="submit" class="btn btn-dark w-100">
+										<i class="fa fa-shopping-cart"></i> Thêm vào giỏ
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<!-- Footer -->
+	<div th:replace="~{layout/_fragments :: main-footer}"></div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

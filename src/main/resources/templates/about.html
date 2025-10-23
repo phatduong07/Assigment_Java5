@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Về Chúng Tôi - MyShop Streetwear</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      color: #212529;
+      font-family: 'Poppins', sans-serif;
+    }
+    .hero {
+      background: url('https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+    }
+    .section-title {
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      color: #333;
+    }
+    .value-card {
+      background: white;
+      border: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    .value-card:hover {
+      transform: translateY(-5px);
+    }
+    .team-img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #333;
+    }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <div th:replace="~{layout/_fragments :: main-header}"></div>
+
+  <!-- Hero Section -->
+  <section class="hero text-center">
+    <div>
+      <h1>MYSHOP STREETWEAR</h1>
+      <p>Phong cách đường phố, tinh thần tự do.</p>
+    </div>
+  </section>
+
+  <main class="container my-5 flex-shrink-0">
+
+    <!-- Giới thiệu -->
+    <section class="mb-5">
+      <h2 class="section-title">Về Chúng Tôi</h2>
+      <p class="text-center mx-auto" style="max-width: 800px;">
+        MyShop Streetwear là thương hiệu thời trang hướng tới giới trẻ năng động, cá tính và tự tin.
+        Với triết lý “Thời trang là ngôn ngữ của bản thân”, chúng tôi không chỉ bán quần áo – mà còn truyền tải phong cách sống, bản lĩnh và thái độ của thế hệ mới.
+      </p>
+    </section>
+
+    <!-- Giá trị cốt lõi -->
+    <section class="mb-5">
+      <h2 class="section-title">Giá Trị Cốt Lõi</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card value-card text-center p-4">
+            <h5 class="fw-bold mb-3">Sáng Tạo</h5>
+            <p>Không ngừng đổi mới trong thiết kế và cách thể hiện để mang đến sản phẩm khác biệt, hợp xu hướng.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card value-card text-center p-4">
+            <h5 class="fw-bold mb-3">Chất Lượng</h5>
+            <p>Từng sản phẩm đều được chọn lọc kỹ càng về chất liệu, đường may và độ hoàn thiện.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card value-card text-center p-4">
+            <h5 class="fw-bold mb-3">Cộng Đồng</h5>
+            <p>Chúng tôi xây dựng cộng đồng yêu thời trang đường phố – nơi bạn được là chính mình.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Đội ngũ -->
+    <section class="mb-5 text-center">
+      <h2 class="section-title">Đội Ngũ Của Chúng Tôi</h2>
+      <div class="row justify-content-center g-4">
+        <div class="col-md-3">
+          <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="Founder" class="team-img mb-3">
+          <h6 class="fw-bold">Đinh Huỳnh Gia Bảo</h6>
+          <p class="text-muted">Người sáng lập & Giám đốc sáng tạo</p>
+        </div>
+        <div class="col-md-3">
+          <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Designer" class="team-img mb-3">
+          <h6 class="fw-bold">Nguyễn Minh Châu</h6>
+          <p class="text-muted">Nhà thiết kế thời trang</p>
+        </div>
+        <div class="col-md-3">
+          <img src="https://randomuser.me/api/portraits/men/13.jpg" alt="Marketing" class="team-img mb-3">
+          <h6 class="fw-bold">Lê Anh Tuấn</h6>
+          <p class="text-muted">Trưởng bộ phận Marketing</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to action -->
+    <section class="text-center py-5 bg-dark text-light rounded-3">
+      <h2>Tham Gia Cộng Đồng MyShop Streetwear</h2>
+      <p class="mb-4">Theo dõi chúng tôi để cập nhật xu hướng và ưu đãi độc quyền.</p>
+      <a href="/register" class="btn btn-outline-light btn-lg px-4">Đăng ký ngay</a>
+    </section>
+  </main>
+
+  <div th:replace="~{layout/_fragments :: main-footer}"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

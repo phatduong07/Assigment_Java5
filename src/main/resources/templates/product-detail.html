@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.name}">Chi tiết sản phẩm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Header -->
+<div th:replace="~{layout/_fragments :: main-header}"></div>
+
+<main class="flex-shrink-0">
+    <div class="container py-5">
+        <div class="row">
+            <!-- Hình ảnh sản phẩm -->
+            <div class="col-md-6">
+                <img th:src="@{'/picture/' + ${product.image}}" 
+                     class="img-fluid rounded shadow" alt="Ảnh sản phẩm">
+            </div>
+
+            <!-- Thông tin chi tiết -->
+            <div class="col-md-6">
+                <h2 class="mb-3" th:text="${product.name}">Tên sản phẩm</h2>
+                <h4 class="text-danger mb-4" 
+                    th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + 'đ'">Giá</h4>
+
+                <!-- 🧢 Chọn size + Thêm vào giỏ -->
+                <form th:action="@{/cart/add}" method="post" class="mb-4">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+
+                    <div class="mb-3">
+                        <label for="size" class="form-label fw-bold">Chọn size:</label>
+                        <select class="form-select w-50" id="size" name="size" required>
+                            <option value="" disabled selected>-- Chọn size --</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <button type="submit" class="btn btn-dark">
+                            <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
+							<!-- ✅ Quản trị sản phẩm (chỉ hiện nếu đăng nhập là ADMIN) -->
+							<div th:if="${session.role == 'ADMIN'}" class="mt-4 border-top pt-3">
+							    <h5 class="fw-bold text-primary mb-3">🔧 Quản trị sản phẩm</h5>
+
+							    <div class="d-flex gap-2">
+							        <form th:action="@{'/products/edit/' + ${product.id}}" method="get">
+							            <button type="submit" class="btn btn-warning">
+							                <i class="fa fa-pen"></i> Chỉnh sửa
+							            </button>
+							        </form>
+
+							        <form th:action="@{'/products/delete/' + ${product.id}}" method="post"
+							              onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này không?');">
+							            <button type="submit" class="btn btn-danger">
+							                <i class="fa fa-trash"></i> Xóa sản phẩm
+							            </button>
+							        </form>
+							    </div>
+							</div>
+
+                        </button>
+                        <a href="/" class="btn btn-outline-secondary">
+                            <i class="fa fa-arrow-left"></i> Quay lại
+                        </a>
+						
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<!-- ==================== SẢN PHẨM LIÊN QUAN ==================== -->
+<section class="container my-5">
+    <h3 class="text-center fw-bold mb-4">Sản phẩm liên quan</h3>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+        <div class="col" th:each="p : ${relatedProducts}">
+            <div class="card border-0 shadow-sm h-100">
+                <a th:href="@{'/products/detail/' + ${p.id}}">
+                    <img th:src="@{'/picture/' + ${p.image}}" class="card-img-top" alt="Ảnh sản phẩm">
+                </a>
+                <div class="card-body text-center">
+                    <h6 class="card-title text-truncate" th:text="${p.name}">Tên sản phẩm</h6>
+                    <p class="text-danger fw-bold mb-2" 
+                       th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + 'đ'">Giá</p>
+                    <a th:href="@{'/products/detail/' + ${p.id}}" class="btn btn-outline-dark btn-sm">
+                        <i class="fa fa-eye"></i> Xem chi tiết
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<div th:replace="~{layout/_fragments :: main-footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
