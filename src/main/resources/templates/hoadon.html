@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hóa đơn</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container my-4">
+    <h2 class="mb-3">Hóa đơn</h2>
+    <div id="orderInfo" class="mb-3"></div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Sản phẩm</th>
+          <th>Giá</th>
+          <th>Số lượng</th>
+          <th>Tổng</th>
+        </tr>
+      </thead>
+      <tbody id="orderBody"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" class="text-end fw-bold">Tổng tiền</td>
+          <td id="totalAmount" class="fw-bold"></td>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="d-flex gap-2 mt-3 no-print">
+      <a href="/" class="btn btn-primary">Về trang chủ</a>
+      <button class="btn btn-success" onclick="window.print()">In hóa đơn</button>
+      <button class="btn btn-danger" onclick="cancelOrder()">Hủy hóa đơn</button>
+    </div>
+  </div>
+
+  <script>
+    const order = JSON.parse(localStorage.getItem('order'));
+
+    if (!order || !order.cart || order.cart.length === 0) {
+      document.body.innerHTML = '<div class="container my-5"><h3>Không có đơn hàng nào</h3></div>';
+    } else {
+      const cart = order.cart;
+      const payment = order.payment || "Chưa chọn";
+      const orderId = order.id || ("HD" + Date.now());
+      const orderDate = order.date || new Date().toLocaleString("vi-VN");
+
+      document.getElementById('orderInfo').innerHTML = `
+        <p><b>Mã hóa đơn:</b> ${orderId}</p>
+        <p><b>Thời gian đặt:</b> ${orderDate}</p>
+        <p><b>Phương thức thanh toán:</b> ${payment}</p>
+      `;
+
+      let total = 0;
+      const body = document.getElementById('orderBody');
+      body.innerHTML = "";
+
+      cart.forEach(item => {
+        const subtotal = item.price * item.qty;
+        total += subtotal;
+        body.innerHTML += `
+          <tr>
+            <td>${item.name}</td>
+            <td>${item.price.toLocaleString()} đ</td>
+            <td>${item.qty}</td>
+            <td>${subtotal.toLocaleString()} đ</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('totalAmount').textContent = total.toLocaleString() + ' đ';
+    }
+
+    function cancelOrder() {
+      if (confirm("Bạn có chắc muốn hủy hóa đơn này?")) {
+        localStorage.removeItem('order');
+        alert("Hóa đơn đã được hủy!");
+        window.location.href = "/";
+      }
+    }
+  </script>
+</body>
+</html>
